@@ -16,6 +16,14 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Configuración por defecto para Single Page Applications (React Router)
 RUN echo 'server { \
     listen 80; \
+    server_name projectsunach.dev www.projectsunach.dev; \
+    return 301 https://$host$request_uri; \
+} \
+server { \
+    listen 443 ssl; \
+    server_name projectsunach.dev www.projectsunach.dev; \
+    ssl_certificate /etc/letsencrypt/live/projectsunach.dev/fullchain.pem; \
+    ssl_certificate_key /etc/letsencrypt/live/projectsunach.dev/privkey.pem; \
     location / { \
         root /usr/share/nginx/html; \
         index index.html index.htm; \
@@ -28,5 +36,5 @@ RUN echo 'server { \
     } \
 }' > /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
