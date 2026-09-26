@@ -21,7 +21,7 @@ export const apiFetch = async (endpoint, options = {}) => {
 
         const data = await response.json();
 
-        if (response.status === 401) {
+        if (response.status === 401 && endpoint !== '/login') {
             clearAuth();
             window.location.href = '/login';
             throw new Error(data.message || 'Sesión expirada');
