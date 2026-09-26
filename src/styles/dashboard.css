@@ -685,3 +685,506 @@ body {
     display: none;
   }
 }
+
+/* =========================================================
+   SIGA Security & Audit System Styles
+   ========================================================= */
+
+/* Navbar Module Navigation */
+.navbar-module-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f1f5f9;
+  padding: 0.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.module-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.module-nav-btn:hover:not(.disabled-rbac) {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.module-nav-btn.active {
+  background: #ffffff;
+  color: var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.module-nav-btn.disabled-rbac {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.rbac-lock-badge {
+  font-size: 0.68rem;
+  background: #e2e8f0;
+  color: #64748b;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Role Switcher in Header */
+.role-switcher-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #f8fafc;
+  padding: 0.35rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.role-switcher-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.role-select {
+  border: none;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+}
+
+/* Role Pills */
+.user-role-pill.admin {
+  background: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #d8b4fe;
+}
+
+.user-role-pill.docente {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.user-role-pill.alumno {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+/* Security Session Indicator in Hero */
+.session-security-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  box-shadow: 0 1px 2px rgba(16, 185, 129, 0.1);
+}
+
+.safe-export-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: #059669;
+  font-weight: 500;
+}
+
+/* =========================================
+   Audit & Security Module Styles
+   ========================================= */
+.audit-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.audit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.audit-title-block {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.audit-icon-badge {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+}
+
+.audit-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.25rem;
+}
+
+.audit-subtitle {
+  font-size: 0.88rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.audit-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* Security Alert Box */
+.security-alert-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-left: 4px solid #f59e0b;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  color: #92400e;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.security-alert-icon {
+  color: #d97706;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Audit Tabs */
+.audit-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.25rem;
+}
+
+.audit-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.audit-tab-btn:hover {
+  color: var(--text-main);
+  background: #f1f5f9;
+}
+
+.audit-tab-btn.active {
+  color: #4f46e5;
+  background: #ffffff;
+}
+
+.audit-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #4f46e5;
+  border-radius: 3px;
+}
+
+/* Audit Badges & Pills */
+.audit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.audit-pill.success {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.audit-pill.danger {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.audit-pill.purple {
+  background: #f5f3ff;
+  color: #6d28d9;
+  border: 1px solid #ddd6fe;
+}
+
+.audit-pill.blue {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.role-chip {
+  display: inline-flex;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.role-chip.admin {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.role-chip.docente {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.role-chip.alumno {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.log-id-badge {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.date-time-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: #334155;
+}
+
+.user-table-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #1e293b;
+  font-size: 0.85rem;
+}
+
+.log-details-text {
+  font-size: 0.84rem;
+  color: #475569;
+}
+
+.ip-chip {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: #f1f5f9;
+  color: #334155;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  border: 1px solid #e2e8f0;
+}
+
+.policy-badge {
+  font-size: 0.74rem;
+  color: #64748b;
+  background: #f8fafc;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.security-check-tag {
+  font-size: 0.75rem;
+  color: #4f46e5;
+  background: #eef2ff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.stat-icon.purple {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+}
+
+/* RBAC Denied Screen */
+.rbac-denied-card {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.rbac-denied-icon {
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+
+.rbac-denied-card h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.75rem;
+}
+
+.rbac-denied-card p {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+}
+
+.rbac-hint {
+  font-size: 0.85rem !important;
+  color: #4f46e5 !important;
+  font-weight: 600;
+}
+
+/* Inactivity Modal */
+.inactivity-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 1.5rem;
+}
+
+.inactivity-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2.25rem 2rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  animation: fadeIn 0.25s ease-out;
+}
+
+.inactivity-icon-wrapper {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #fef3c7;
+  color: #d97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.inactivity-modal h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.75rem;
+}
+
+.inactivity-modal p {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+}
+
+.inactivity-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.inactivity-btn {
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.inactivity-btn.primary {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.inactivity-btn.primary:hover {
+  background: var(--primary-hover);
+}
+
+.inactivity-btn.secondary {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.inactivity-btn.secondary:hover {
+  background: #e2e8f0;
+}
