@@ -15,6 +15,7 @@ COPY --from=build /app/dist /usr/share/nginx/html
 
 # Configuración por defecto para Single Page Applications (React Router)
 RUN cat <<'EOF' > /etc/nginx/conf.d/default.conf
+server_tokens off;
 server {
     listen 80 default_server;
     listen 443 ssl default_server;
