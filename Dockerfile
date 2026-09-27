@@ -24,6 +24,12 @@ server { \
     server_name projectsunach.dev www.projectsunach.dev; \
     ssl_certificate /etc/letsencrypt/live/projectsunach.dev/fullchain.pem; \
     ssl_certificate_key /etc/letsencrypt/live/projectsunach.dev/privkey.pem; \
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always; \
+    add_header X-Frame-Options "SAMEORIGIN" always; \
+    add_header X-Content-Type-Options "nosniff" always; \
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always; \
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:;" always; \
+    add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always; \
     location / { \
         root /usr/share/nginx/html; \
         index index.html index.htm; \
