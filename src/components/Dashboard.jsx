@@ -127,14 +127,7 @@ const Dashboard = () => {
     };
   }, [handleLogout]);
 
-  // Cambiar rol de demostración (facilita la evaluación de RBAC)
-  const handleChangeRole = (newRole) => {
-    setUserData(username, newRole);
-    setRolState(newRole);
-    if (newRole !== 'admin' && activeModule === 'auditoria') {
-      setActiveModule('academico');
-    }
-  };
+
 
   // Semestres únicos
   const semesterOptions = useMemo(() => {
@@ -342,19 +335,7 @@ const Dashboard = () => {
 
           {/* Controles de Usuario y Rol */}
           <div className="user-nav-controls">
-            {/* Simulador de Rol para demostración de RBAC */}
-            <div className="role-switcher-dropdown" title="Simular permisos RBAC para evaluación">
-              <span className="role-switcher-label">Rol:</span>
-              <select 
-                value={rol.toLowerCase()} 
-                onChange={(e) => handleChangeRole(e.target.value)}
-                className="role-select"
-              >
-                <option value="admin">Admin (Acceso Total)</option>
-                <option value="docente">Docente (Académico)</option>
-                <option value="alumno">Alumno (Estudiante)</option>
-              </select>
-            </div>
+
 
             <div className="user-profile-badge">
               <div className="user-avatar-circle" title={username}>
