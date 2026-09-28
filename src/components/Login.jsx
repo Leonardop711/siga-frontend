@@ -3,18 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/api';
 import { setToken, setUserData } from '../utils/auth';
 import { cleanText } from '../utils/security';
-import { 
-  GraduationCap, 
-  User, 
-  Lock, 
-  Eye, 
-  EyeOff, 
-  Loader2, 
-  AlertCircle, 
-  ShieldCheck, 
-  ShieldAlert, 
-  Clock, 
-  CheckCircle2 
+import {
+  GraduationCap,
+  User,
+  Lock,
+  Eye,
+  EyeOff,
+  Loader2,
+  AlertCircle,
+  ShieldCheck,
+  ShieldAlert,
+  Clock,
+  CheckCircle2
 } from './Icons';
 import '../styles/login.css';
 
@@ -24,7 +24,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // Manejo de intentos y bloqueo por fuerza bruta (Rate Limiting HTTP 429)
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
@@ -61,7 +61,7 @@ const Login = () => {
 
     try {
       const data = await loginUser({ username: sanitizedUser, password });
-      
+
       setToken(data.token);
       setUserData(data.username, data.rol);
       setFailedAttempts(0);
@@ -140,7 +140,7 @@ const Login = () => {
                 <span>{error}</span>
               </div>
             )}
-            
+
             <form onSubmit={handleLogin} className="login-form">
               <div className="input-group">
                 <label htmlFor="login-username">Usuario o Matrícula</label>
@@ -148,37 +148,37 @@ const Login = () => {
                   <span className="input-icon">
                     <User size={18} />
                   </span>
-                  <input 
+                  <input
                     id="login-username"
-                    type="text" 
-                    value={username} 
-                    onChange={e => setUsername(e.target.value)} 
-                    required 
+                    type="text"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                    required
                     className="login-input"
                     placeholder="ej. admin o matricula"
                     autoComplete="username"
                   />
                 </div>
               </div>
-              
+
               <div className="input-group">
                 <label htmlFor="login-password">Contraseña</label>
                 <div className="input-wrapper">
                   <span className="input-icon">
                     <Lock size={18} />
                   </span>
-                  <input 
+                  <input
                     id="login-password"
-                    type={showPassword ? "text" : "password"} 
-                    value={password} 
-                    onChange={e => setPassword(e.target.value)} 
-                    required 
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
                     className="login-input has-toggle"
                     placeholder="••••••••••••"
                     autoComplete="current-password"
                   />
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="toggle-password-btn"
                     onClick={() => setShowPassword(!showPassword)}
                     title={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
@@ -188,7 +188,7 @@ const Login = () => {
                   </button>
                 </div>
               </div>
-              
+
               <button type="submit" disabled={loading} className="login-btn">
                 {loading ? (
                   <>
@@ -202,35 +202,8 @@ const Login = () => {
             </form>
 
             {/* Accesos Rápidos para Demostración de Roles (RBAC) */}
-            <div className="demo-credentials-section">
-              <span className="demo-title">Acceso rápido para evaluación de roles (RBAC):</span>
-              <div className="demo-buttons-row">
-                <button 
-                  type="button" 
-                  onClick={() => handleQuickFill('admin')}
-                  className="demo-badge-btn admin"
-                  title="Acceso total: Gestión Escolar + Auditoría y Seguridad"
-                >
-                  Admin
-                </button>
-                <button 
-                  type="button" 
-                  onClick={() => handleQuickFill('docente')}
-                  className="demo-badge-btn docente"
-                  title="Acceso Docente: Gestión de calificaciones"
-                >
-                  Docente
-                </button>
-                <button 
-                  type="button" 
-                  onClick={() => handleQuickFill('alumno')}
-                  className="demo-badge-btn alumno"
-                  title="Acceso Alumno: Kardex de calificaciones"
-                >
-                  Alumno
-                </button>
-              </div>
-            </div>
+
+
           </>
         )}
 
