@@ -319,3 +319,29 @@ export const createUsuario = async (usuarioData) => {
     body: JSON.stringify(usuarioData),
   });
 };
+
+export const updateAlumno = async (matricula, data) => {
+  return apiFetch(`/alumnos/${matricula}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+};
+
+export const deleteAlumno = async (matricula) => {
+  return apiFetch(`/alumnos/${matricula}`, {
+    method: 'DELETE',
+  });
+};
+
+export const updateUsuario = async (id, data) => {
+  return apiFetch(`/usuarios/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+};
+
+export const deleteUsuario = async (id) => {
+  return apiFetch(`/usuarios/${id}`, {
+    method: 'DELETE',
+  });
+};

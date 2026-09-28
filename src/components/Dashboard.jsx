@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAlumnos } from '../services/api';
+import { getAlumnos, deleteAlumno } from '../services/api';
 import { clearAuth, isAuthenticated, getRole, getUsername, setUserData } from '../utils/auth';
 import { sanitizeForCSV, cleanText } from '../utils/security';
 import AuditView from './AuditView';
@@ -55,6 +55,18 @@ const Dashboard = () => {
     clearAuth();
     navigate('/login');
   }, [navigate]);
+
+  const handleDeleteAlumno = async (matricula) => {
+    if (window.confirm(`¿Estás seguro de que deseas eliminar permanentemente de la Base de Datos al alumno con matrícula ${matricula} (y sus calificaciones)? Esta acción no se puede deshacer.`)) {
+      try {
+        await deleteAlumno(matricula);
+        alert('Alumno eliminado exitosamente de la base de datos.');
+        fetchData();
+      } catch (err) {
+        alert(err.message || 'Error al eliminar alumno.');
+      }
+    }
+  };
 
   // Carga de datos académicos
   const fetchData = async () => {
@@ -525,6 +537,7 @@ const Dashboard = () => {
                       <th>Semestre</th>
                       <th>Asignatura</th>
                       <th>Calificación</th>
+                      {rol !== 'alumno' && <th>Acciones</th>}
                     </tr>
                   </thead>
                   <tbody>
@@ -582,6 +595,17 @@ const Dashboard = () => {
                           <td>
                             {renderGradeBadge(row.calificacion)}
                           </td>
+                          {rol !== 'alumno' && (
+                            <td>
+                              <div className="row-actions">
+                                {rol === 'admin' && (
+                                  <button className="action-btn-sm delete-btn" onClick={() => handleDeleteAlumno(row.matricula)} title="Eliminar alumno de la BD">
+                                    🗑️
+                                  </button>
+                                )}
+                              </div>
+                            </td>
+                          )}
                         </tr>
                       ))
                     )}
