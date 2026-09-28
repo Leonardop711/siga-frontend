@@ -501,14 +501,16 @@ const Dashboard = () => {
                 </div>
 
                 <div className="toolbar-actions">
-                  <button 
-                    onClick={() => setShowInsertModal(true)} 
-                    className="action-btn insert-data-btn"
-                    title="Registrar nuevos alumnos, calificaciones o usuarios en la base de datos"
-                  >
-                    <Plus size={16} />
-                    <span>Insertar Datos</span>
-                  </button>
+                  {rol !== 'alumno' && (
+                    <button 
+                      onClick={() => setShowInsertModal(true)} 
+                      className="action-btn insert-data-btn"
+                      title="Registrar nuevos alumnos, calificaciones o usuarios en la base de datos"
+                    >
+                      <Plus size={16} />
+                      <span>Insertar Datos</span>
+                    </button>
+                  )}
 
                   <button 
                     onClick={fetchData} 
@@ -628,7 +630,8 @@ const Dashboard = () => {
         isOpen={showInsertModal} 
         onClose={() => setShowInsertModal(false)} 
         onSuccess={fetchData} 
-        existingAlumnos={data} 
+        existingAlumnos={data}
+        userRole={rol}
       />
     </div>
   );

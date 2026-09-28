@@ -15,8 +15,9 @@ import {
   EyeOff
 } from './Icons';
 
-const DataInsertionModal = ({ isOpen, onClose, onSuccess, existingAlumnos = [] }) => {
-  const [activeTab, setActiveTab] = useState('alumno'); // 'alumno' | 'calificacion' | 'usuario'
+const DataInsertionModal = ({ isOpen, onClose, onSuccess, existingAlumnos = [], userRole = 'admin' }) => {
+  const isAdmin = userRole === 'admin';
+  const [activeTab, setActiveTab] = useState(isAdmin ? 'alumno' : 'calificacion');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -205,14 +206,16 @@ const DataInsertionModal = ({ isOpen, onClose, onSuccess, existingAlumnos = [] }
 
         {/* Tab Pills */}
         <div className="modal-tab-nav">
-          <button 
-            type="button"
-            className={`modal-tab-btn ${activeTab === 'alumno' ? 'active' : ''}`}
-            onClick={() => { setActiveTab('alumno'); resetFeedback(); }}
-          >
-            <GraduationCap size={16} />
-            <span>Registrar Alumno</span>
-          </button>
+          {isAdmin && (
+            <button 
+              type="button"
+              className={`modal-tab-btn ${activeTab === 'alumno' ? 'active' : ''}`}
+              onClick={() => { setActiveTab('alumno'); resetFeedback(); }}
+            >
+              <GraduationCap size={16} />
+              <span>Registrar Alumno</span>
+            </button>
+          )}
           
           <button 
             type="button"
@@ -223,14 +226,16 @@ const DataInsertionModal = ({ isOpen, onClose, onSuccess, existingAlumnos = [] }
             <span>Registrar Calificación</span>
           </button>
 
-          <button 
-            type="button"
-            className={`modal-tab-btn ${activeTab === 'usuario' ? 'active' : ''}`}
-            onClick={() => { setActiveTab('usuario'); resetFeedback(); }}
-          >
-            <User size={16} />
-            <span>Registrar Usuario</span>
-          </button>
+          {isAdmin && (
+            <button 
+              type="button"
+              className={`modal-tab-btn ${activeTab === 'usuario' ? 'active' : ''}`}
+              onClick={() => { setActiveTab('usuario'); resetFeedback(); }}
+            >
+              <User size={16} />
+              <span>Registrar Usuario</span>
+            </button>
+          )}
         </div>
 
         {/* Feedback Alerts */}
