@@ -21,8 +21,10 @@ import {
   ShieldAlert,
   Clock,
   User,
-  Layers
+  Layers,
+  Plus
 } from './Icons';
+import DataInsertionModal from './DataInsertionModal';
 import '../styles/dashboard.css';
 
 const INACTIVITY_WARNING_MS = 14 * 60 * 1000; // 14 minutos
@@ -41,6 +43,7 @@ const Dashboard = () => {
   // Estado de usuario y rol (con soporte de cambio de rol para testing de RBAC)
   const [username, setUserNameState] = useState(getUsername());
   const [rol, setRolState] = useState(getRole());
+  const [showInsertModal, setShowInsertModal] = useState(false);
 
   // Control de inactividad de sesión
   const [showInactivityModal, setShowInactivityModal] = useState(false);
@@ -499,6 +502,15 @@ const Dashboard = () => {
 
                 <div className="toolbar-actions">
                   <button 
+                    onClick={() => setShowInsertModal(true)} 
+                    className="action-btn insert-data-btn"
+                    title="Registrar nuevos alumnos, calificaciones o usuarios en la base de datos"
+                  >
+                    <Plus size={16} />
+                    <span>Insertar Datos</span>
+                  </button>
+
+                  <button 
                     onClick={fetchData} 
                     className="action-btn"
                     title="Actualizar datos académicos"
@@ -610,6 +622,14 @@ const Dashboard = () => {
           </>
         )}
       </main>
+
+      {/* Modal de Inserción y Prueba de Datos */}
+      <DataInsertionModal 
+        isOpen={showInsertModal} 
+        onClose={() => setShowInsertModal(false)} 
+        onSuccess={fetchData} 
+        existingAlumnos={data} 
+      />
     </div>
   );
 };

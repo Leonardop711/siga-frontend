@@ -157,6 +157,27 @@ export const apiFetch = async (endpoint, options = {}) => {
     }
 
     if (endpoint === '/alumnos') {
+      if (options.method === 'POST') {
+        const body = JSON.parse(options.body || '{}');
+        const nuevo = {
+          matricula: body.matricula,
+          nombre: body.nombre,
+          apellido: body.apellido,
+          semestre: parseInt(body.semestre, 10),
+          asignatura: 'Sin registrar',
+          calificacion: null
+        };
+        MOCK_DATA.alumnos.unshift(nuevo);
+        MOCK_DATA.logs.unshift({
+          id: MOCK_DATA.logs.length + 1,
+          fecha: new Date().toISOString(),
+          accion: 'CREATE_ALUMNO',
+          usuario: localStorage.getItem('username') || 'admin',
+          detalles: `Registro de alumno ${body.matricula} (${body.nombre} ${body.apellido})`,
+          ip: '127.0.0.1'
+        });
+        return { status: 'ok', message: 'Alumno registrado exitosamente', data: nuevo };
+      }
       return { status: 'ok', data: MOCK_DATA.alumnos };
     }
 
@@ -169,10 +190,67 @@ export const apiFetch = async (endpoint, options = {}) => {
     }
 
     if (endpoint === '/usuarios') {
+      if (options.method === 'POST') {
+        const body = JSON.parse(options.body || '{}');
+        const nuevo = {
+          id: MOCK_DATA.usuarios.length + 1,
+          username: body.username,
+          rol: body.rol,
+          activo: body.activo !== false,
+          creado_en: new Date().toISOString()
+        };
+        MOCK_DATA.usuarios.unshift(nuevo);
+        MOCK_DATA.logs.unshift({
+          id: MOCK_DATA.logs.length + 1,
+          fecha: new Date().toISOString(),
+          accion: 'CREATE_USUARIO',
+          usuario: localStorage.getItem('username') || 'admin',
+          detalles: `Creación de cuenta para usuario '${body.username}' con rol '${body.rol}'`,
+          ip: '127.0.0.1'
+        });
+        return { status: 'ok', message: 'Usuario registrado exitosamente', data: nuevo };
+      }
       return { status: 'ok', data: MOCK_DATA.usuarios };
     }
 
     if (endpoint === '/calificaciones') {
+      if (options.method === 'POST') {
+        const body = JSON.parse(options.body || '{}');
+        const nueva = {
+          id: MOCK_DATA.calificaciones.length + 1,
+          matricula: body.matricula,
+          asignatura: body.asignatura,
+          calificacion: parseFloat(body.calificacion),
+          fecha_registro: new Date().toISOString().slice(0, 10)
+        };
+        MOCK_DATA.calificaciones.unshift(nueva);
+        // También actualizar o agregar en alumnos si existe para reflejar en tabla principal
+        const alumno = MOCK_DATA.alumnos.find(a => a.matricula === body.matricula);
+        if (alumno) {
+          if (!alumno.calificacion) {
+            alumno.asignatura = body.asignatura;
+            alumno.calificacion = String(body.calificacion);
+          } else {
+            MOCK_DATA.alumnos.unshift({
+              matricula: alumno.matricula,
+              nombre: alumno.nombre,
+              apellido: alumno.apellido,
+              semestre: alumno.semestre,
+              asignatura: body.asignatura,
+              calificacion: String(body.calificacion)
+            });
+          }
+        }
+        MOCK_DATA.logs.unshift({
+          id: MOCK_DATA.logs.length + 1,
+          fecha: new Date().toISOString(),
+          accion: 'CREATE_CALIFICACION',
+          usuario: localStorage.getItem('username') || 'admin',
+          detalles: `Calificación asignada a matrícula ${body.matricula} en ${body.asignatura}: ${body.calificacion}`,
+          ip: '127.0.0.1'
+        });
+        return { status: 'ok', message: 'Calificación registrada exitosamente', data: nueva };
+      }
       return { status: 'ok', data: MOCK_DATA.calificaciones };
     }
 
@@ -191,11 +269,18 @@ export const loginUser = async (credentials) => {
 };
 
 /**
- * Servicios Académicos
+ * Servicios Académicos (Lectura e Inserción)
  */
 export const getAlumnos = async () => {
   const res = await apiFetch('/alumnos');
   return Array.isArray(res) ? res : (res?.data || []);
+};
+
+export const createAlumno = async (alumnoData) => {
+  return apiFetch('/alumnos', {
+    method: 'POST',
+    body: JSON.stringify(alumnoData),
+  });
 };
 
 export const getCalificaciones = async () => {
@@ -203,8 +288,15 @@ export const getCalificaciones = async () => {
   return Array.isArray(res) ? res : (res?.data || []);
 };
 
+export const createCalificacion = async (calificacionData) => {
+  return apiFetch('/calificaciones', {
+    method: 'POST',
+    body: JSON.stringify(calificacionData),
+  });
+};
+
 /**
- * Servicios de Auditoría y Seguridad
+ * Servicios de Auditoría y Seguridad (Lectura e Inserción)
  */
 export const getLogs = async () => {
   const res = await apiFetch('/logs');
@@ -219,4 +311,11 @@ export const getIntentos = async () => {
 export const getUsuarios = async () => {
   const res = await apiFetch('/usuarios');
   return Array.isArray(res) ? res : (res?.data || []);
+};
+
+export const createUsuario = async (usuarioData) => {
+  return apiFetch('/usuarios', {
+    method: 'POST',
+    body: JSON.stringify(usuarioData),
+  });
 };
