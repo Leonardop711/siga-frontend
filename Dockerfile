@@ -27,23 +27,14 @@ server {
 # 2. Redireccion HTTP -> HTTPS
 server {
     listen 80;
-    server_name projectsunach.dev www.projectsunach.dev;
-    return 301 https://www.projectsunach.dev;
+    server_name projectsunach.dev;
+    return 301 https://projectsunach.dev$request_uri;
 }
 
-# 3. Redireccion HTTPS sin www -> HTTPS con www
+# 3. Aplicacion principal (HTTPS + Security Headers + VPC Peering)
 server {
     listen 443 ssl;
     server_name projectsunach.dev;
-    ssl_certificate /etc/letsencrypt/live/projectsunach.dev/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/projectsunach.dev/privkey.pem;
-    return 301 https://www.projectsunach.dev;
-}
-
-# 4. Aplicacion principal (HTTPS + Security Headers + VPC Peering)
-server {
-    listen 443 ssl;
-    server_name www.projectsunach.dev;
     ssl_certificate /etc/letsencrypt/live/projectsunach.dev/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/projectsunach.dev/privkey.pem;
     
