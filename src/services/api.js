@@ -27,8 +27,10 @@ export const apiFetch = async (endpoint, options = {}) => {
   }
 
   if (response.status === 401 && endpoint !== '/login') {
+    const message = data.message || 'Sesión expirada o no autorizada.';
+    sessionStorage.setItem('siga_auth_alert', message);
     clearAuth();
-    const err = new Error(data.message || 'Sesión expirada o no autorizada.');
+    const err = new Error(message);
     err.status = 401;
     throw err;
   }

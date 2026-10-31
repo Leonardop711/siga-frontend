@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { loginUser } from '../services/api';
 import { setToken, setUserData } from '../utils/auth';
 import { cleanText } from '../utils/security';
@@ -31,6 +31,16 @@ const Login = () => {
   const [lockCountdown, setLockCountdown] = useState(0);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Detectar avisos de sesión (ej. sesión iniciada en otro dispositivo o expirada)
+  useEffect(() => {
+    const alertMsg = location.state?.alertMessage || sessionStorage.getItem('siga_auth_alert');
+    if (alertMsg) {
+      setError(alertMsg);
+      sessionStorage.removeItem('siga_auth_alert');
+    }
+  }, [location]);
 
   // Contador de bloqueo por fuerza bruta
   useEffect(() => {
@@ -52,7 +62,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (isLocked) return;
+    if (isLocked || loading) return;
 
     setError('');
     setLoading(true);

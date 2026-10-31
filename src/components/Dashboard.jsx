@@ -51,9 +51,9 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = useCallback((reason) => {
     clearAuth();
-    navigate('/login');
+    navigate('/login', { state: { alertMessage: reason } });
   }, [navigate]);
 
   const handleDeleteAlumno = async (matricula) => {
@@ -78,7 +78,7 @@ const Dashboard = () => {
       setData(alumnosList);
     } catch (err) {
       if (err.status === 401) {
-        handleLogout();
+        handleLogout(err.message);
         return;
       }
       setError(err.message || 'Error al cargar los registros académicos');
