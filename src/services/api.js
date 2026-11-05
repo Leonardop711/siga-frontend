@@ -1,21 +1,18 @@
-import { getToken, clearAuth, setToken, setUserData } from '../utils/auth';
+import { clearAuth } from '../utils/auth';
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const apiFetch = async (endpoint, options = {}) => {
-  const token = getToken();
   const headers = {
     'Content-Type': 'application/json',
     ...options.headers,
   };
 
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers,
+    // Incluir cookies HttpOnly automáticamente en cada petición
+    credentials: 'include',
   });
 
   const data = await response.json();
@@ -52,6 +49,18 @@ export const loginUser = async (credentials) => {
     method: 'POST',
     body: JSON.stringify(credentials),
   });
+};
+
+export const logoutUser = async () => {
+  try {
+    await apiFetch('/logout', {
+      method: 'POST',
+    });
+  } catch {
+    // Limpiar sesión local incluso si la red falla
+  } finally {
+    clearAuth();
+  }
 };
 
 /**

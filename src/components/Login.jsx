@@ -76,7 +76,7 @@ const Login = () => {
       setUserData(data.username, data.rol);
       setFailedAttempts(0);
 
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       // Si el servidor responde 429 (Demasiados intentos) o alcanzamos 5 intentos locales
       if (err.status === 429 || failedAttempts + 1 >= 5) {

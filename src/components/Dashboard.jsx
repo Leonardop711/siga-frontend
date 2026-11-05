@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAlumnos, deleteAlumno } from '../services/api';
+import { getAlumnos, deleteAlumno, logoutUser } from '../services/api';
 import { clearAuth, isAuthenticated, getRole, getUsername, setUserData } from '../utils/auth';
 import { sanitizeForCSV, cleanText } from '../utils/security';
 import AuditView from './AuditView';
@@ -52,7 +52,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = useCallback((reason) => {
-    clearAuth();
+    logoutUser();
     navigate('/login', { state: { alertMessage: reason } });
   }, [navigate]);
 
