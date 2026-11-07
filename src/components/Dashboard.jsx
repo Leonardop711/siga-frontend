@@ -52,8 +52,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = useCallback((reason) => {
-    logoutUser();
-    navigate('/login', { state: { alertMessage: reason } });
+    const alertMessage = typeof reason === 'string' && reason ? reason : null;
+    if (alertMessage) {
+      sessionStorage.setItem('siga_auth_alert', alertMessage);
+      clearAuth();
+    } else {
+      logoutUser();
+    }
+    navigate('/login', { replace: true, state: alertMessage ? { alertMessage } : undefined });
   }, [navigate]);
 
   const handleDeleteAlumno = async (matricula) => {
@@ -93,7 +99,27 @@ const Dashboard = () => {
       return;
     }
     fetchData();
-  }, [navigate]);
+
+    // Verificación periódica de sesión concurrente (detecta si se inició sesión en otro navegador/dispositivo)
+    const checkConcurrentSession = async () => {
+      if (!isAuthenticated()) return;
+      try {
+        await getAlumnos();
+      } catch (err) {
+        if (err.status === 401) {
+          handleLogout(err.message);
+        }
+      }
+    };
+
+    const pollTimer = setInterval(checkConcurrentSession, 5000);
+    window.addEventListener('focus', checkConcurrentSession);
+
+    return () => {
+      clearInterval(pollTimer);
+      window.removeEventListener('focus', checkConcurrentSession);
+    };
+  }, [navigate, handleLogout]);
 
   // Detector de Inactividad de Sesión
   useEffect(() => {

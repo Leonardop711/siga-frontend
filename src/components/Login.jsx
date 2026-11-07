@@ -35,10 +35,15 @@ const Login = () => {
 
   // Detectar avisos de sesión (ej. sesión iniciada en otro dispositivo o expirada)
   useEffect(() => {
-    const alertMsg = location.state?.alertMessage || sessionStorage.getItem('siga_auth_alert');
+    const storedAlert = sessionStorage.getItem('siga_auth_alert');
+    const stateAlert = typeof location.state?.alertMessage === 'string' ? location.state.alertMessage : null;
+    const alertMsg = stateAlert || storedAlert;
     if (alertMsg) {
       setError(alertMsg);
-      sessionStorage.removeItem('siga_auth_alert');
+      const timer = setTimeout(() => {
+        sessionStorage.removeItem('siga_auth_alert');
+      }, 1500);
+      return () => clearTimeout(timer);
     }
   }, [location]);
 
