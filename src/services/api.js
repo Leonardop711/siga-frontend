@@ -18,7 +18,7 @@ export const apiFetch = async (endpoint, options = {}) => {
   const data = await response.json();
 
   if (response.status === 429) {
-    const err = new Error(data.message || 'Demasiados intentos fallidos. Sistema bloqueado temporalmente por seguridad, intente en 3 minutos.');
+    const err = new Error(data.message || 'Demasiados intentos fallidos. Sistema bloqueado temporalmente por seguridad, intente en 5 minutos.');
     err.status = 429;
     throw err;
   }

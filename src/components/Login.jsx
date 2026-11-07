@@ -25,8 +25,10 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Manejo de intentos y bloqueo por fuerza bruta (Rate Limiting HTTP 429)
-  const [failedAttempts, setFailedAttempts] = useState(0);
+  // Manejo de intentos y bloqueo por fuerza bruta (Rate Limiting HTTP 429: 10 intentos / 5 minutos)
+  const [failedAttempts, setFailedAttempts] = useState(() => {
+    return parseInt(sessionStorage.getItem('siga_failed_attempts') || '0', 10);
+  });
   const [isLocked, setIsLocked] = useState(false);
   const [lockCountdown, setLockCountdown] = useState(0);
 
@@ -56,6 +58,7 @@ const Login = () => {
           if (prev <= 1) {
             setIsLocked(false);
             setFailedAttempts(0);
+            sessionStorage.removeItem('siga_failed_attempts');
             return 0;
           }
           return prev - 1;
@@ -79,20 +82,24 @@ const Login = () => {
 
       setToken(data.token);
       setUserData(data.username, data.rol);
+      // Inicio de sesión exitoso: reiniciar contador de intentos fallidos a 0
       setFailedAttempts(0);
+      sessionStorage.removeItem('siga_failed_attempts');
 
       navigate('/dashboard', { replace: true });
     } catch (err) {
-      // Si el servidor responde 429 (Demasiados intentos) o alcanzamos 5 intentos locales
-      if (err.status === 429 || failedAttempts + 1 >= 5) {
+      // Si el servidor responde 429 (Demasiados intentos) o alcanzamos 10 intentos fallidos seguidos
+      if (err.status === 429 || failedAttempts + 1 >= 10) {
         setIsLocked(true);
-        setLockCountdown(15 * 60); // 15 minutos en segundos (política del backend)
-        setError('Acceso bloqueado por políticas de ciberseguridad (Rate Limiting). Demasiados intentos fallidos.');
+        setLockCountdown(5 * 60); // 5 minutos en segundos
+        sessionStorage.removeItem('siga_failed_attempts');
+        setError('Acceso bloqueado por 5 minutos por políticas de ciberseguridad (10 intentos fallidos).');
       } else {
         const nextAttempts = failedAttempts + 1;
         setFailedAttempts(nextAttempts);
+        sessionStorage.setItem('siga_failed_attempts', String(nextAttempts));
         setError(
-          `${err.message || 'Error al autenticar credenciales'}. Intento ${nextAttempts} de 5 antes de bloqueo temporal.`
+          `${err.message || 'Error al autenticar credenciales'}. Intento ${nextAttempts} de 10 antes de bloqueo temporal de 5 minutos.`
         );
       }
     } finally {
